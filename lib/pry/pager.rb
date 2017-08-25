@@ -51,6 +51,8 @@ class Pry::Pager
   def best_available
     if !_pry_.config.pager
       NullPager.new(_pry_.output)
+    elsif SystemPager.available? && RbConfig::CONFIG['ruby_version'][0..2].to_f >= 1.9
+      SystemPager.new(_pry_.output)
     elsif !SystemPager.available? || Pry::Helpers::BaseHelpers.jruby?
       SimplePager.new(_pry_.output)
     else
